@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-
+using Exiled.Loader;
 using UnityEngine;
-
-using scp035.API;
 
 using Random = UnityEngine.Random;
 
@@ -104,7 +104,6 @@ namespace Stalky106
 			}
 		}
 		// Wrapper for SCP-035
-		int? Scp035Id => Scp035Data.GetScp035()?.Id;
 		public IEnumerator<float> StalkCoroutine(Player player)
 		{
 			List<Player> list = new List<Player>();
@@ -114,12 +113,31 @@ namespace Stalky106
 			// If we did do it in one iteration, we would have to "go back" at some point,
 			// meaning we aren't really saving any CPU time at all.
 
+			List<Player> scp035s = null;
+			foreach (var plugin in Loader.Plugins)
+			{
+				if (plugin.Name == "scp035")
+				{
+					try
+					{
+						scp035s = (List<Player>)Loader.Plugins.First(pl => pl.Name == "scp035").Assembly.GetType("scp035.API.Scp035Data").GetMethod("GetScp035s", BindingFlags.Public | BindingFlags.Static).Invoke(null, null);
+					}
+					catch (Exception e)
+					{
+						Log.Debug("Failed getting 035s: " + e);
+						scp035s = new List<Player>();
+					}
+					break;
+				}
+				else
+				{
+					scp035s = new List<Player>();
+				}
+			}
+
 			foreach (Player plausibleTarget in Player.List)
 			{
-
-				try {
-					if (plausibleTarget.Id == Scp035Id) continue;
-				} catch { }
+				if (scp035s.Contains(plausibleTarget)) continue;
 				if (!alwaysIgnore.Contains(plausibleTarget.Role)
 					&& !plugin.Config.Preferences.IgnoreRoles.Contains(plausibleTarget.Role)
 					&& !plugin.Config.Preferences.IgnoreTeams.Contains(plausibleTarget.Team))
