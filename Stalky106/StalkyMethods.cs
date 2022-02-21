@@ -140,7 +140,7 @@ namespace Stalky106
 				if (scp035s.Contains(plausibleTarget)) continue;
 				if (!alwaysIgnore.Contains(plausibleTarget.Role)
 					&& !plugin.Config.Preferences.IgnoreRoles.Contains(plausibleTarget.Role)
-					&& !plugin.Config.Preferences.IgnoreTeams.Contains(plausibleTarget.Team))
+					&& !plugin.Config.Preferences.IgnoreTeams.Contains(plausibleTarget.Role.Team))
 				{
 					if (plugin.Config.Preferences.SameZoneOnly)
 					{
@@ -190,7 +190,7 @@ namespace Stalky106
 			disableFor = Time.time + 10f;
 			if (!plugin.Config.Translations.RoleDisplayNames.TryGetValue(target.Role, out string className))
 			{
-				className = defaultRoleNames[(int)target.Role];
+				className = defaultRoleNames[(int)target.Role.Type];
 			}
 
 			;
@@ -226,7 +226,7 @@ namespace Stalky106
 			// Sets the NetworkportalPosition to pos. Since it's a C# Property,
 			// NetworkPortalPosition is a "set" method and calls some behaviour on its own.
 			// Using provided API functions ensures reliability in future updates.
-			script.NetworkportalPosition = pos;
+			script.SetPortalPosition(Vector3.zero, pos);
 
 			// Checks the config auto_tp to teleport SCP-106
 			if (plugin.Config.Preferences.AutoTp)
