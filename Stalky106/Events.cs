@@ -68,7 +68,7 @@ namespace Stalky106
 				if (ply.IsAlive) 
 				{
 					aliveCount++;
-					if (!plugin.Config.Preferences.IgnoreRoles.Contains(ply.Role) && !plugin.Config.Preferences.IgnoreTeams.Contains(ply.Role.Team))
+					if (!plugin.Config.Preferences.IgnoreRoles.Contains(ply.Role) && !plugin.Config.Preferences.IgnoreTeams.Contains(ply.Team))
 					{
 						targetCount++;
 					}

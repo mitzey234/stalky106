@@ -140,7 +140,7 @@ namespace Stalky106
 				if (scp035s.Contains(plausibleTarget)) continue;
 				if (!alwaysIgnore.Contains(plausibleTarget.Role)
 					&& !plugin.Config.Preferences.IgnoreRoles.Contains(plausibleTarget.Role)
-					&& !plugin.Config.Preferences.IgnoreTeams.Contains(plausibleTarget.Role.Team))
+					&& !plugin.Config.Preferences.IgnoreTeams.Contains(plausibleTarget.Team))
 				{
 					if (plugin.Config.Preferences.SameZoneOnly)
 					{
@@ -190,7 +190,7 @@ namespace Stalky106
 			disableFor = Time.time + 10f;
 			if (!plugin.Config.Translations.RoleDisplayNames.TryGetValue(target.Role, out string className))
 			{
-				className = defaultRoleNames[(int)target.Role.Type];
+				className = defaultRoleNames[(int)target.Role];
 			}
 
 			;
